@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
 import UseStateApp from './components/useState';
+import UseEffectApp from './components/useEffect';
 
 function App() {
   return (
-  <UseStateApp />
+    <div>
+      <UseStateApp />
+      <UseEffectApp />
+    </div>
   )
 }
 
