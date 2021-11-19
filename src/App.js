@@ -4,17 +4,19 @@ import './App.css';
 function App() {
   const [data, setData] = useState({ hits: [] });
   const [query, setQuery] = useState('react');
-  const [search, setSearch] = useState('react');
+  const [url, setUrl] = useState(
+    'https://hn.algolia.com/api/v1/search?query=react',
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`https://hn.algolia.com/api/v1/search?query=${search}`);
+      const result = await fetch(url);
       const resultJson = await result.json();
       setData(resultJson);
     }
 
     fetchData();
-  }, [search]);
+  }, [url]);
 
   return (
     <Fragment>
@@ -24,7 +26,9 @@ function App() {
         onChange={event => setQuery(event.target.value)}
       />
 
-      <button type="button" onClick={() => setSearch(query)}>
+      <button type="button" onClick={() => {
+        setUrl(`http://hn.algolia.com/api/v1/search?query=${query}`)
+      }}>
         Search
       </button>
 
