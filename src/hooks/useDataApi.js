@@ -36,19 +36,31 @@ const useDataApi = (initialUrl, initialData) => {
   });
 
   useEffect(() => {
+    // Flag to prevent setting state when the component is unmounted.
+    let didCancel = true;
+
     const fetchData = async () => {
       dispatch({ type: 'FETCH_INIT' });
 
       try {
         const result = await fetch(url);
         const resultJson = await result.json();
-        dispatch({ type: 'FETCH_SUCCESS', payload: resultJson });
+
+        if (!didCancel) {
+          dispatch({ type: 'FETCH_SUCCESS', payload: resultJson });
+        }
       } catch (e) {
-        dispatch({ type: 'FETCH_FAILURE' });
+        if (!didCancel) {
+          dispatch({ type: 'FETCH_FAILURE' });
+        }
       }
     }
 
     fetchData();
+
+    return () {
+      didCancel = true;
+    }
   }, [url]);
 
   return [state, setUrl]
